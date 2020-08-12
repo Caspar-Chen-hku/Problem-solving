@@ -1,20 +1,25 @@
 class Solution {
 public:
     bool checkInclusion(string s1, string s2) {
-        map<char, int> occur;
-        int total = s1.length();
+        int l1=s1.length(), l2=s2.length();
+        if (l2<l1) return false;
+        map<char,int> m1;
         for (char c:s1){
-            occur[c]++;
+            m1[c]++;
         }
-        int i = 0, j = 0;
-        int total2 = 0;
-        while (j < s2.length() && total2<total){
-            if (occur.count(s2[j])==0){
-                j++; i = j; total2=0; continue;
-            }else{
-                total2++; j++;
+        map<char,int> m2;
+        for (int i=0; i<l1; i++){
+            m2[s2[i]]++;
+        }
+        if (m1==m2) return true;
+        for (int i=l1; i<l2; i++){
+            m2[s2[i-l1]]--;
+            if (m2[s2[i-l1]]==0){
+                m2.erase(s2[i-l1]);
             }
+            m2[s2[i]]++;
+            if (m1==m2) return true;
         }
-        return total == total2;
+        return false;
     }
 };
